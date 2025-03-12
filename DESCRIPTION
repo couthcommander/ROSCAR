@@ -15,7 +15,7 @@ Authors@R:
              comment = c(ORCID = "0000-0002-6849-6255")))
 Description: More about what it does (maybe more than one line).
 Depends: R (>= 3.5)
-Imports: caret, glmnet
+Imports: caret, glmnet, randomForest
 License: GPL (>=3)
 RoxygenNote: 7.3.2
 Encoding: UTF-8
