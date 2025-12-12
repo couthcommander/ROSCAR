@@ -7,7 +7,7 @@
 model_eval(mod, tau)
 }
 \arguments{
-\item{mod}{\sQuote{cate_model} object, created with \code{\link{model_coef}}.}
+\item{mod}{\sQuote{cate_model} object, created with \code{\link{cate_model}}.}
 
 \item{tau}{NEEDINFO}
 }
@@ -23,7 +23,7 @@ Compare model estimates
 }
 \examples{
 data(os, rct, tau)
-mod <- model_coef(rct, os)
+mod <- cate_model(rct, os)
 model_eval(mod, tau)
 
 }

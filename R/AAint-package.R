@@ -10,12 +10,13 @@
 #'
 #' @importFrom caret createFolds train trainControl
 #' @importFrom glmnet cv.glmnet
+#' @importFrom MASS mvrnorm
 #' @importFrom stats coef cor lm predict
 #' @importFrom utils modifyList
 #'
 #' @examples
 #' data(os, rct, tau)
-#' mod <- model_coef(rct, os, randomForest = TRUE)
+#' mod <- cate_model(rct, os, randomForest = TRUE)
 #' head(model_pred(mod))
 #' head(model_pred(mod, rct$X))
 #' model_eval(mod, tau)

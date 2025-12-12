@@ -10,7 +10,7 @@ what does it do?
 }
 \examples{
 data(os, rct, tau)
-mod <- model_coef(rct, os, randomForest = TRUE)
+mod <- cate_model(rct, os, randomForest = TRUE)
 head(model_pred(mod))
 head(model_pred(mod, rct$X))
 model_eval(mod, tau)

@@ -2,7 +2,7 @@
 #'
 #' Compare model estimates
 #'
-#' @param mod \sQuote{cate_model} object, created with \code{\link{model_coef}}.
+#' @param mod \sQuote{cate_model} object, created with \code{\link{cate_model}}.
 #' @param tau NEEDINFO
 #'
 #' @return
@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' data(os, rct, tau)
-#' mod <- model_coef(rct, os)
+#' mod <- cate_model(rct, os)
 #' model_eval(mod, tau)
 #'
 #' @export

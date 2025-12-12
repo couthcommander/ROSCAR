@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' data(os, rct)
-#' mod <- model_coef(rct, os)
+#' mod <- cate_model(rct, os)
 #' print(mod, max = 40)
 #'
 #' @rdname print
@@ -17,9 +17,7 @@
 
 print.cate_model <-
 function(x, ...) {
-  cc <- lapply(x, function(i) i[['cate_coefficients']][,1])
-  # random forest models don't include coefficients
-  d <- as.data.frame(cc[lengths(cc) > 0])
+  d <- cate_coefficients(x)
   print(d, ...)
   invisible(x)
 }

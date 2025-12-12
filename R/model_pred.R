@@ -21,15 +21,11 @@ function(object, newdata) {
     stop("'object' should inherit class 'cate_model'")
   }
   if(!missing(newdata)) {
-    ests <- lapply(object, function(i) {
-      unname(i$cate_function(newdata))
-    })
+    ests <- lapply(cate_function(object), function(f) unname(f(newdata)))
+    o <- as.data.frame(ests)
   } else {
-    ests <- lapply(object, function(i) {
-      unname(i$fitted_cate)
-    })
+    o <- fitted_cate(object)
   }
-  o <- as.data.frame(ests)
   class(o) <- c('data.frame', 'cate_est')
   o
 }
