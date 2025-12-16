@@ -2,10 +2,12 @@
 #'
 #' CATE estimates
 #'
-#' @param rct NEEDINFO
-#' @param os NEEDINFO
-#' @param randomForest NEEDINFO
-#' @param sampleSplit NEEDINFO
+#' @param rct Randomized clincal trial (RCT) data
+#' @param os Observational study (OS) data
+#' @param randomForest Utilize random forest approach
+#' @param sampleSplit Utilize sampling to split data set
+#' @param method By default, all methods are used. Can be
+#' specified as \sQuote{naive}, \sQuote{racer}, \sQuote{oscar}, \sQuote{roscar}.
 #'
 #' @return
 #' \item{estimates by method}{

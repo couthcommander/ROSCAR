@@ -9,14 +9,14 @@ model_eval(mod, tau)
 \arguments{
 \item{mod}{\sQuote{cate_model} object, created with \code{\link{cate_model}}.}
 
-\item{tau}{NEEDINFO}
+\item{tau}{True treatment effect for RCT data.}
 }
 \value{
-\item{rmse}{NEEDINFO}
-\item{rank_corr}{NEEDINFO}
-\item{accuracy_itr}{NEEDINFO}
-\item{cal_intercept}{NEEDINFO}
-\item{cal_slope}{NEEDINFO}
+\item{rmse}{Root mean squared error}
+\item{rank_corr}{Spearman correlation}
+\item{accuracy_itr}{Model accuracy with respect to sign}
+\item{cal_intercept}{Calibration intercept}
+\item{cal_slope}{Calibration coefficients}
 }
 \description{
 Compare model estimates

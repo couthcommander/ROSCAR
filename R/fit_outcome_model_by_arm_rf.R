@@ -3,9 +3,9 @@
 #' Fit outcome regression model for each treatment arm.
 #'
 #' @keywords internal
-#' @param X NEEDINFO
-#' @param A NEEDINFO
-#' @param Y NEEDINFO
+#' @param X Data set covariates
+#' @param A Vector with treatment assignment
+#' @param Y Vector with outcome variable
 
 fit_outcome_model_by_arm_rf <-
 function(X, A, Y)

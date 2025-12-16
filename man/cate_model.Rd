@@ -13,13 +13,16 @@ cate_model(
 )
 }
 \arguments{
-\item{rct}{NEEDINFO}
+\item{rct}{Randomized clincal trial (RCT) data}
 
-\item{os}{NEEDINFO}
+\item{os}{Observational study (OS) data}
 
-\item{randomForest}{NEEDINFO}
+\item{randomForest}{Utilize random forest approach}
 
-\item{sampleSplit}{NEEDINFO}
+\item{sampleSplit}{Utilize sampling to split data set}
+
+\item{method}{By default, all methods are used. Can be
+specified as \sQuote{naive}, \sQuote{racer}, \sQuote{oscar}, \sQuote{roscar}.}
 }
 \value{
 \item{estimates by method}{

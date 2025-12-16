@@ -7,11 +7,11 @@
 fit_outcome_model_by_arm_rf(X, A, Y)
 }
 \arguments{
-\item{X}{NEEDINFO}
+\item{X}{Data set covariates}
 
-\item{A}{NEEDINFO}
+\item{A}{Vector with treatment assignment}
 
-\item{Y}{NEEDINFO}
+\item{Y}{Vector with outcome variable}
 }
 \description{
 Fit outcome regression model for each treatment arm.

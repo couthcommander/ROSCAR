@@ -7,13 +7,13 @@
 calibrate_outcome_model(X, A, Y, mu_x_a_coefs)
 }
 \arguments{
-\item{X}{NEEDINFO}
+\item{X}{Data set covariates}
 
-\item{A}{NEEDINFO}
+\item{A}{Vector with treatment assignment}
 
-\item{Y}{NEEDINFO}
+\item{Y}{Vector with outcome variable}
 
-\item{mu_x_a_coefs}{NEEDINFO}
+\item{mu_x_a_coefs}{Outcome regression coefficient matrix}
 }
 \description{
 Calibrate the outcome regression functions to (RCT) data.

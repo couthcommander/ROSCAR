@@ -3,7 +3,8 @@
 #' CATE estimates with new data
 #'
 #' @param object \sQuote{cate_model} object, created with \code{\link{model_coef}}.
-#' @param newdata NEEDINFO
+#' @param newdata An optional data frame in which to look for
+#' variables with which to predict. If omitted, the fitted values are used.
 #'
 #' @return A data.frame with estimates from each method.
 #'

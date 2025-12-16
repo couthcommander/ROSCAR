@@ -3,10 +3,10 @@
 #' Calibrate the outcome regression functions to (RCT) data.
 #'
 #' @keywords internal
-#' @param X NEEDINFO
-#' @param A NEEDINFO
-#' @param Y NEEDINFO
-#' @param mu_x_a_coefs NEEDINFO
+#' @param X Data set covariates
+#' @param A Vector with treatment assignment
+#' @param Y Vector with outcome variable
+#' @param mu_x_a_coefs Outcome regression coefficient matrix
 
 calibrate_outcome_model <-
 function(X, A, Y, mu_x_a_coefs)

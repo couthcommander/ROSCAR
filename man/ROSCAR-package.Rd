@@ -6,7 +6,10 @@
 \alias{ROSCAR-package}
 \title{Package}
 \description{
-what does it do?
+R-OSCAR (Robust Observational Studies for CMO-Augmented RCT)
+is a two-stage estimator that calibrates OS outcome predictions
+to the RCT population and corrects residual biases through
+regularized regression. Comparison methods are also provided.
 }
 \examples{
 data(os, rct, tau)

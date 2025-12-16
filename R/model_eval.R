@@ -3,14 +3,14 @@
 #' Compare model estimates
 #'
 #' @param mod \sQuote{cate_model} object, created with \code{\link{cate_model}}.
-#' @param tau NEEDINFO
+#' @param tau True treatment effect for RCT data.
 #'
 #' @return
-#' \item{rmse}{NEEDINFO}
-#' \item{rank_corr}{NEEDINFO}
-#' \item{accuracy_itr}{NEEDINFO}
-#' \item{cal_intercept}{NEEDINFO}
-#' \item{cal_slope}{NEEDINFO}
+#' \item{rmse}{Root mean squared error}
+#' \item{rank_corr}{Spearman correlation}
+#' \item{accuracy_itr}{Model accuracy with respect to sign}
+#' \item{cal_intercept}{Calibration intercept}
+#' \item{cal_slope}{Calibration coefficients}
 #'
 #' @examples
 #' data(os, rct, tau)
