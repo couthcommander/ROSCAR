@@ -1,8 +1,8 @@
-Package: OSCAR
+Package: ROSCAR
 Type: Package
 Title: What the Package Does (Short Line)
 Version: 1.0
-Date: 2025-03-04
+Date: 2025-12-16
 Authors@R: 
     c(person(given = "Amir",
              family = "Asiaeetaheri",
@@ -20,7 +20,6 @@ License: GPL (>=3)
 RoxygenNote: 7.3.2
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2025-03-04 22:46:40 UTC; beckca
 Author: Amir Asiaeetaheri [aut, cre],
   Cole Beck [aut] (<https://orcid.org/0000-0002-6849-6255>)
 Maintainer: Amir Asiaeetaheri <amir.asiaeetaheri@vumc.org>
