@@ -32,8 +32,8 @@ sineFun <- function(x, b) {
 outcome_model <- function(x, b0, b1, sigma, treatment_assigned, FUN = linearFun) {
   n <- nrow(x)
   stopifnot('user provided FUN must have arguments "x" and "b"' = identical(c('x','b'), formalArgs(FUN)))
-  y0 <- FUN(x, b0)
-  y1 <- FUN(x, b1)
+  y0 <- drop(FUN(x, b0))
+  y1 <- drop(FUN(x, b1))
   tau <- y1 - y0
   y1 <- y1 + rnorm(n, sd=.5*sigma)
   y0 <- y0 + rnorm(n, sd=.5*sigma)
