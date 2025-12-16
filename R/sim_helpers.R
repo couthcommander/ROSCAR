@@ -1,8 +1,8 @@
 #Perturb m elements of a vector by amount
 #' @keywords internal
 perturb <- function(vector, ind, amount){
-  m <- length(ind);
-  vector[ind] <- vector[ind] + sample(c(-1,1), replace=T, size=m) * runif(m, min=.5*amount, max=1*amount)
+  m <- length(ind)
+  vector[ind] <- vector[ind] + sample(c(-1,1), replace=T, size=m) * stats::runif(m, min=.5*amount, max=1*amount)
   return(vector)
 }
 
@@ -14,7 +14,7 @@ linearFun <- function(x, b) {
 #' @keywords internal
 quadraticFun <- function(x, b) {
   p <- length(b)
-  m <- runif(p, min = 0.25, max = 0.5)
+  m <- stats::runif(p, min = 0.25, max = 0.5)
   m[b == 0] <- 0
   x %*% b + x^2 %*% m
 }
@@ -22,7 +22,7 @@ quadraticFun <- function(x, b) {
 #' @keywords internal
 sineFun <- function(x, b) {
   p <- length(b)
-  m <- runif(p, min = 0.25, max = 0.5)
+  m <- stats::runif(p, min = 0.25, max = 0.5)
   m[b == 0] <- 0
   x %*% b + sin(x) %*% m
 }
@@ -31,12 +31,12 @@ sineFun <- function(x, b) {
 #' @keywords internal
 outcome_model <- function(x, b0, b1, sigma, treatment_assigned, FUN = linearFun) {
   n <- nrow(x)
-  stopifnot('user provided FUN must have arguments "x" and "b"' = identical(c('x','b'), formalArgs(FUN)))
+  stopifnot('user provided FUN must have arguments "x" and "b"' = identical(c('x','b'), methods::formalArgs(FUN)))
   y0 <- drop(FUN(x, b0))
   y1 <- drop(FUN(x, b1))
   tau <- y1 - y0
-  y1 <- y1 + rnorm(n, sd=.5*sigma)
-  y0 <- y0 + rnorm(n, sd=.5*sigma)
+  y1 <- y1 + stats::rnorm(n, sd=.5*sigma)
+  y0 <- y0 + stats::rnorm(n, sd=.5*sigma)
 
   y_potential <- cbind(y0, y1)
   colnames(y_potential) <- c("untreated", "treated")

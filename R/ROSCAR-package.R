@@ -11,10 +11,9 @@
 #'
 #' Maintainer: Amir Asiaeetaheri \email{amir.asiaeetaheri@vumc.org}
 #'
-#' @importFrom caret createFolds train trainControl
 #' @importFrom glmnet cv.glmnet
-#' @importFrom MASS mvrnorm
-#' @importFrom stats coef cor lm predict
+#' @importFrom methods formalArgs
+#' @importFrom stats coef cor lm predict rbinom rnorm runif
 #' @importFrom utils modifyList
 #'
 #' @examples

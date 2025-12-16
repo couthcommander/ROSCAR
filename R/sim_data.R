@@ -74,6 +74,9 @@ simulate_rct_and_os_data <- function(
 ){
   # save arguments
   exp_settings <- as.list(environment())
+  if(!requireNamespace('MASS', quietly = TRUE)) {
+    stop('package "MASS" is required to simulate data')
+  }
   # w.r.t. covariate mismatch
   # U: only in RCT
   # V: only in OS
@@ -83,7 +86,7 @@ simulate_rct_and_os_data <- function(
   cv_mismatch <- frac_U > 0 || frac_V > 0
   if(cv_mismatch) {
     if (frac_U < 0 || frac_V < 0 || frac_U + frac_V > 1) {
-      stop("fractions must be ≥0 and sum to ≤1")
+      stop("fractions must be >=0 and sum to <=1")
     }
     cov_effect_Z <- unname(covariate_effect['Z'])
     cov_effect_V <- unname(covariate_effect['V'])
@@ -159,17 +162,17 @@ simulate_rct_and_os_data <- function(
     U_r <- X_full_r[, idx_u, drop = FALSE]
 
     p_z10 <- min(p_z, 10)
-    lin_term_o <- base_logit + Z_o[, seq_len(p_z10), drop = FALSE] %*% runif(p_z10, .25, .5)
+    lin_term_o <- base_logit + Z_o[, seq_len(p_z10), drop = FALSE] %*% stats::runif(p_z10, .25, .5)
   } else {
     ## logistic model uses 10 random covariates
     #let the first 10 features determine the assignments, the weight of the rest is zero
-    lin_term_o <- base_logit + X_full_o %*% c(runif(10, min=.25, max=.5), numeric(max(p-10,0)))[seq_len(p)]
+    lin_term_o <- base_logit + X_full_o %*% c(stats::runif(10, min=.25, max=.5), numeric(max(p-10,0)))[seq_len(p)]
   }
   # linear term=0 => prob=0.5
   e_o <- 1 / (1 + exp(-lin_term_o))
-  a_o <- rbinom(n_o, 1, e_o)
+  a_o <- stats::rbinom(n_o, 1, e_o)
   # RCT: 1:1 randomization
-  a_r <- rbinom(n_r, 1, 0.5)
+  a_r <- stats::rbinom(n_r, 1, 0.5)
 
   ## ---- coefficient generation for OS arm ------------------------------
   beta0_o <- beta1_o <- numeric(p)

@@ -1,10 +1,4 @@
-#' model_oscar
-#'
-#' Estimate conditional average treatment effect.
-#'
-#' Users will likely not call this function directly, instead
-#' relying in behavior in \code{\link{cate_model}}.
-#'
+#' @rdname cate_model
 #' @export
 
 model_oscar <-

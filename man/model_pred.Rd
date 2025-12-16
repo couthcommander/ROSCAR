@@ -7,7 +7,7 @@
 model_pred(object, newdata)
 }
 \arguments{
-\item{object}{\sQuote{cate_model} object, created with \code{\link{model_coef}}.}
+\item{object}{\sQuote{cate_model} object, created with \code{\link{cate_model}}.}
 
 \item{newdata}{An optional data frame in which to look for
 variables with which to predict. If omitted, the fitted values are used.}
@@ -20,7 +20,7 @@ CATE estimates with new data
 }
 \examples{
 data(os, rct)
-mod <- model_coef(rct, os)
+mod <- cate_model(rct, os)
 prd <- model_pred(mod)
 prdNewdata <- model_pred(mod, rct$X)
 

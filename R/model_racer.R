@@ -1,10 +1,4 @@
-#' model_racer
-#'
-#' Estimate conditional average treatment effect.
-#'
-#' Users will likely not call this function directly, instead
-#' relying in behavior in \code{\link{cate_model}}.
-#'
+#' @rdname cate_model
 #' @export
 
 model_racer <-
@@ -41,9 +35,11 @@ function(rct, os = NULL, randomForest = FALSE) {
     y_tilde <- (A_1_m1 * (rctY - m_of_x_avg) * propens_weights) * mean_propens
 
     if(randomForest) {
+        ## Convert X to data frame with column names
+        X <- as.data.frame(rctX)
+        names(X) <- paste0("Var", seq_len(ncol(X)))
         ## estimate CATE by predicting working response with covariates using random forest
-        cate_model <- caret::train(y = y_tilde, x = X, method = "rf", trControl = train_control,
-                            tuneGrid = tGrid, ntree = 50, nodesize = 25)
+        cate_model <- train_rf(y_tilde, X)
         cate_coefficients <- NULL
         ## function to predict CATE for new data
         return_cate <- function(x)
@@ -91,22 +87,11 @@ rf_racer_mu_x <- function(rctX, rctY, trt_idx) {
     ## Convert X to data frame with column names
     X <- as.data.frame(rctX)
     names(X) <- paste0("Var", seq_len(ncol(X)))
-    tGrid <- data.frame(mtry = floor(sqrt(ncol(X))))
-    ## define the training control
-    train_control <- caret::trainControl(method = "cv", number = 5)
 
     ## list to store trained models -- one for each treatment
     rf_models <- lapply(trt_idx, function(i) {
         ## train random forest model
-        caret::train(
-            y = rctY[i],
-            x = X[i,,drop = FALSE],
-            method = 'rf',
-            trControl = train_control,
-            tuneGrid = tGrid,
-            ntree = 50,
-            nodesize = 25
-        )
+        train_rf(rctY[i], X[i,,drop = FALSE])
     })
     ## predict mu_x for the training data
     vapply(rf_models, stats::predict, numeric(nrow(X)), newdata = X)

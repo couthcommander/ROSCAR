@@ -1,10 +1,4 @@
-#' model_naive
-#'
-#' Estimate conditional average treatment effect.
-#'
-#' Users will likely not call this function directly, instead
-#' relying in behavior in \code{\link{cate_model}}.
-#'
+#' @rdname cate_model
 #' @export
 
 model_naive <-
@@ -34,11 +28,8 @@ function(rct, os = NULL, randomForest = FALSE) {
         ## Convert X to data frame with column names
         X <- as.data.frame(rctX)
         names(X) <- paste0("Var", seq_len(ncol(X)))
-        ## define the training control
-        train_control <- caret::trainControl(method = "cv", number = 5)
         ## estimate CATE by predicting working response with covariates using random forest
-        cate_model <- caret::train(y = y_tilde, x = X, method = "rf", trControl = train_control,
-                            tuneGrid = data.frame(mtry = floor(sqrt(ncol(X)))), ntree = 50, nodesize = 25)
+        cate_model <- train_rf(y_tilde, X)
         cate_coefficients <- NULL
         ## function to predict CATE for new data
         return_cate <- function(x)

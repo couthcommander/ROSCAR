@@ -1,10 +1,4 @@
-#' model_roscar
-#'
-#' Estimate conditional average treatment effect.
-#'
-#' Users will likely not call this function directly, instead
-#' relying in behavior in \code{\link{cate_model}}.
-#'
+#' @rdname cate_model
 #' @export
 
 model_roscar <-
@@ -107,6 +101,9 @@ ss_roscar <- function(rct, propensity_vec, mu_x_a_coefs) {
     rctA <- rct$A
     K <- 5 # make this argument?
     s_cates_coeffs <- matrix(NA, nrow = ncol(rctX)+1, ncol = K) #CATEs will be the columns
+    if(!requireNamespace('caret', quietly = TRUE)) {
+        stop('package "caret" is required for sample split in R-OSCAR')
+    }
     # To have a balance of treatment in each split use AR for creating folds.
     index <- caret::createFolds(rctA,
                         k = K,

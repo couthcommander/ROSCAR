@@ -1,0 +1,12 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.gitignore$
+^\.gitlab-ci.yml$
+^\.travis.yml$
+^\.travis\.yml$
+^\.DS_store$
+^doc$
+^Meta$
+^\.zenodo.json$
+^\.git$
+^\.github$
