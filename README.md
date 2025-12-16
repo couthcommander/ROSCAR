@@ -44,18 +44,6 @@ head(model_pred(mod))
     ## 6  1.0056099  0.9140123  0.5881268  0.7044381
 
 ``` r
-head(model_pred(mod, rct$X))
-```
-
-    ##        naive      racer      oscar    r_oscar
-    ## 1  0.5969415 -0.4252329 -0.9880615 -0.8910070
-    ## 2 -0.3047681 -0.5098061 -0.5721287 -0.3644886
-    ## 3  2.4979136  2.8464549  2.7485553  3.0285358
-    ## 4  1.1565326  1.5171946  1.5858946  1.6751391
-    ## 5 -1.1141061 -0.6689769 -0.3313598 -0.4118794
-    ## 6  1.0056099  0.9140123  0.5881268  0.7044381
-
-``` r
 model_eval(mod, tau)
 ```
 
@@ -81,3 +69,23 @@ model_eval(mod_sh, tau)
     ## racer   1.042412 0.7352517    0.7800000   -0.15499987 1.0069535
     ## oscar   1.061850 0.7179022    0.7833333   -0.06819577 0.9679672
     ## r_oscar 1.051774 0.7267010    0.7833333   -0.10839042 0.9538993
+
+Try a quick experiment.
+
+``` r
+iter <- 10
+set.seed(iter)
+l <- vector('list', iter)
+for(i in seq_along(l)) {
+  dat <- simulate_rct_and_os_data(n_r=250, n_o=500)
+  rct <- list(X = dat$X_RCT, Y = dat$y_r$y_observed, A = dat$a_r)
+  os <- list(X = dat$X_OS, Y = dat$y_o$y_observed, A = dat$a_o)
+  mod <- cate_model(rct, os)
+  l[[i]] <- model_eval(mod, dat$y_r$tau)
+}
+# mean RMSE for each method
+rowMeans(vapply(l, \(i) i[,'rmse'], numeric(4)))
+```
+
+    ##     naive     racer     oscar   r_oscar 
+    ## 1.3424593 0.3153759 0.2095290 0.2080282

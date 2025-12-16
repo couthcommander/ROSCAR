@@ -37,7 +37,6 @@ Run and evaluate models.
 ```{r}
 mod <- cate_model(rct, os)
 head(model_pred(mod))
-head(model_pred(mod, rct$X))
 model_eval(mod, tau)
 ```
 
@@ -50,4 +49,21 @@ os_sh <- os
 os_sh[['X']] <- do.call(cbind, dat$components[c('Z_o','V')])
 mod_sh <- cate_model(rct_sh, os_sh)
 model_eval(mod_sh, tau)
+```
+
+Try a quick experiment.
+
+```{r}
+iter <- 10
+set.seed(iter)
+l <- vector('list', iter)
+for(i in seq_along(l)) {
+  dat <- simulate_rct_and_os_data(n_r=250, n_o=500)
+  rct <- list(X = dat$X_RCT, Y = dat$y_r$y_observed, A = dat$a_r)
+  os <- list(X = dat$X_OS, Y = dat$y_o$y_observed, A = dat$a_o)
+  mod <- cate_model(rct, os)
+  l[[i]] <- model_eval(mod, dat$y_r$tau)
+}
+# mean RMSE for each method
+rowMeans(vapply(l, \(i) i[,'rmse'], numeric(4)))
 ```
