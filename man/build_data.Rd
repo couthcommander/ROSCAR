@@ -8,24 +8,26 @@
 \alias{impute_0}
 \title{Build RCT and OS}
 \usage{
-build_data(RCT, OS, RCT_imp_method, OS_imp_method)
+build_data(..., RCT_imp_method, OS_imp_method)
 
-\method{build_data}{default}(RCT, OS, RCT_imp_method = impute_OLS, OS_imp_method = impute_0)
+\method{build_data}{default}(..., RCT_imp_method = impute_OLS, OS_imp_method = impute_0)
 
-\method{build_data}{sim_data}(dat, RCT_imp_method = impute_OLS, OS_imp_method = impute_0)
+\method{build_data}{sim_data}(..., RCT_imp_method = impute_OLS, OS_imp_method = impute_0)
 
 impute_OLS(has_excl, has_shr, oth_shr, oth_excl)
 
 impute_0(has_excl, has_shr, oth_shr, oth_excl)
 }
 \arguments{
-\item{RCT}{Randomized clincal trial (RCT) data
-is a list with U (covariates not available in OS),
-Z (shared covariates with OS), Y (outcome), A (treatment).}
-
-\item{OS}{Observational study (OS) data is a list
-with V (covariates not available in RCT),
-Z (shared covariates with RCT), Y, A.}
+\item{\dots}{Should hold one or two list objects.
+If both RCT and OS data exist, this should be two lists.
+It can be only one if only RCT data exists. In either case
+these list objects should have three elements:
+Z (shared covariates), Y (outcome), A (treatment);
+a fourth element U should be present if RCT/OS have
+covariates not available in the other.
+The input can alternatively be a \sQuote{sim_data} object
+created with (see \code{\link{simulate_rct_and_os_data}}).}
 
 \item{RCT_imp_method}{Imputation function for RCT data;
 when unspecified \sQuote{Vhat_r} will be imputed with \sQuote{OLS}.
@@ -34,9 +36,6 @@ Set to NULL to only use shared covariates (no imputation).}
 \item{OS_imp_method}{Imputation function for OS data; when
 unspecified \sQuote{Uhat_o} will be imputed as zeroes.
 Set to NULL to only use shared covariates (no imputation).}
-
-\item{dat}{Instead of \sQuote{RCT} and \sQuote{OS}, a \sQuote{sim_data}
-object can be provided (see \code{\link{simulate_rct_and_os_data}}).}
 
 \item{has_excl}{Required for imputation method}
 
