@@ -18,8 +18,7 @@ dat <- simulate_rct_and_os_data(
   covariate_effect = c(Z = 2/3, V = 1),
   frac_U = 0.3, frac_V = 0.3
 )
-rct_os <- build_data(dat)
-tau <- dat$y_r$tau
+rct_os <- build_data(dat = dat)
 ```
 
 Run and evaluate models.
@@ -38,7 +37,7 @@ head(model_pred(mod))
     ## 6  1.5433424  1.384840  1.976091  2.388333
 
 ``` r
-model_eval(mod, tau)
+model_eval(mod, rct_os$tau)
 ```
 
     ##             rmse rank_corr accuracy_itr cal_intercept cal_slope
@@ -50,9 +49,9 @@ model_eval(mod, tau)
 Repeat with only shared covariates.
 
 ``` r
-rct_os <- build_data(dat, RCT_imp_method = NULL, OS_imp_method = NULL)
+rct_os <- build_data(dat = dat, RCT_imp_method = NULL, OS_imp_method = NULL)
 mod_sh <- cate_model(rct_os$RCT, rct_os$OS)
-model_eval(mod_sh, tau)
+model_eval(mod_sh, rct_os$tau)
 ```
 
     ##             rmse rank_corr accuracy_itr cal_intercept cal_slope
@@ -69,7 +68,7 @@ set.seed(iter)
 l <- vector('list', iter)
 for(i in seq_along(l)) {
   dat <- simulate_rct_and_os_data(n_r=250, n_o=500)
-  rct_os <- build_data(dat)
+  rct_os <- build_data(dat = dat)
   mod <- cate_model(rct_os$RCT, rct_os$OS)
   l[[i]] <- model_eval(mod, dat$y_r$tau)
 }

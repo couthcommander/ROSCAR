@@ -3,15 +3,14 @@
 #' Create necessary RCT and OS components required to
 #' run \code{\link{cate_model}}.
 #'
-#' @param \dots Should hold one or two list objects.
-#' If both RCT and OS data exist, this should be two lists.
-#' It can be only one if only RCT data exists. In either case
-#' these list objects should have three elements:
-#' Z (shared covariates), Y (outcome), A (treatment);
-#' a fourth element U should be present if RCT/OS have
-#' covariates not available in the other.
-#' The input can alternatively be a \sQuote{sim_data} object
-#' created with (see \code{\link{simulate_rct_and_os_data}}).
+#' @param RCT Randomized clincal trial (RCT) data
+#' is a list with U (covariates not available in OS),
+#' Z (shared covariates with OS), Y (outcome), A (treatment).
+#' @param OS Observational study (OS) data is a list
+#' with V (covariates not available in RCT),
+#' Z (shared covariates with RCT), Y, A.
+#' @param dat Instead of \sQuote{RCT} and \sQuote{OS}, a \sQuote{sim_data}
+#' object can be provided (see \code{\link{simulate_rct_and_os_data}}).
 #' @param RCT_imp_method Imputation function for RCT data;
 #' when unspecified \sQuote{Vhat_r} will be imputed with \sQuote{OLS}.
 #' Set to NULL to only use shared covariates (no imputation).
@@ -23,14 +22,14 @@
 #' @param oth_shr Required for imputation method
 #' @param oth_excl Required for imputation method
 #'
-#' Imputation functions can be provided to impute either with RCT or
-#' OS data. In either case, it's expected that the function will have four
+#' Imputation functions can be provided to impute using RCT and
+#' OS data. It's expected that the function will have four
 #' arguments (has_excl, has_shr, oth_shr, oth_excl). \sQuote{has_excl}
 #' and \sQuote{has_shr} refer to the data set receiving imputation.
 #' \sQuote{oth_shr} and \sQuote{oth_excl} refer to the data set being
 #' used for imputation. In the typical setting of imputing RCT covariates
 #' from OS, has_excl = RCT[['U']], has_shr = RCT[['Z']], oth_shr = OS[['Z']],
-#' and oth_excl = OS[['V']]. A user-defined function is limited to this
+#' and oth_excl = OS[['V']]. A user-defined function should be limited to this
 #' information.
 #'
 #' @return
@@ -54,18 +53,24 @@
 #'   covariate_effect = c(Z = 2/3, V = 1),
 #'   frac_U = 0.3, frac_V = 0.3
 #' )
-#' rct_os <- build_data(x)
+#' rct_os <- build_data(dat = x)
 #'
 #' @export
 
-build_data <- function(..., RCT_imp_method, OS_imp_method) {
-    UseMethod('build_data')
-}
-
-#' @rdname build_data
-#' @export
-build_data.default <- function(..., RCT_imp_method = impute_OLS, OS_imp_method = impute_0) {
-    RCT <- ..1
+build_data <- function(RCT, OS = NULL, dat = NULL, RCT_imp_method = impute_OLS, OS_imp_method = impute_0) {
+    if(!is.null(dat) && inherits(dat, 'sim_data')) {
+        comp <- dat$components
+        if(is.null(comp)) {
+            comp <- list(Z_r = dat$X_RCT, Z_o = dat$X_OS)
+            RCT_imp_method <- NULL
+            OS_imp_method <- NULL
+        }
+        RCT <- list(U = comp$U, Z = comp$Z_r, Y = dat$y_r$y_observed, A = dat$a_r)
+        OS <- list(Z = comp$Z_o, V = comp$V, Y = dat$y_o$y_observed, A = dat$a_o)
+        tau <- dat$y_r$tau
+    } else {
+        tau <- NULL
+    }
     U_r <- RCT[['U']]
     Z_r <- RCT[['Z']]
     RCT_Y <- RCT[['Y']]
@@ -75,8 +80,7 @@ build_data.default <- function(..., RCT_imp_method = impute_OLS, OS_imp_method =
         'RCT list should contain "A" (treatment) element' = !is.null(RCT_A),
         'RCT list should contain "Z" (and "U")' = !is.null(Z_r)
     )
-    if(...length() == 2L) {
-        OS <- ..2
+    if(!is.null(OS)) {
         Z_o <- OS[['Z']]
         V_o <- OS[['V']]
         OS_Y <- OS[['Y']]
@@ -120,23 +124,8 @@ Limiting data to shared covariates.')
     }
     rct <- list(X = RCT_cov, Y = RCT_Y, A = RCT_A)
     os <- list(X = OS_cov, Y = OS_Y, A = OS_A)
-    list(RCT = rct, OS = os)
-}
-
-#' @rdname build_data
-#' @export
-build_data.sim_data <- function(..., RCT_imp_method = impute_OLS, OS_imp_method = impute_0) {
-    dat <- ..1
-    comp <- dat$components
-    if(is.null(comp)) {
-        comp <- list(Z_r = dat$X_RCT, Z_o = dat$X_OS)
-        RCT_imp_method <- NULL
-        OS_imp_method <- NULL
-    }
-    RCT <- list(U = comp$U, Z = comp$Z_r, Y = dat$y_r$y_observed, A = dat$a_r)
-    OS <- list(Z = comp$Z_o, V = comp$V, Y = dat$y_o$y_observed, A = dat$a_o)
-    o <- build_data(RCT, OS, RCT_imp_method, OS_imp_method)
-    c(o, tau = list(dat$y_r$tau))
+    o <- list(RCT = rct, OS = os, tau = tau)
+    o[lengths(o) > 0L]
 }
 
 #' @rdname build_data
