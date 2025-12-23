@@ -125,8 +125,7 @@ simulate_rct_and_os_data <- function(
     diag(Sigma) <- 1
 
     sup_Z <- seq_len(ceiling(support_fraction * rct_size))
-    # pu+pv OR pz+pv?
-    sup_V <- seq_len(ceiling(support_fraction * (p_u+p_v)))
+    sup_V <- seq_len(ceiling(support_fraction * (p_z + p_v)))
   } else {
     rho <- 0.75
     Sigma <- rho ^ abs(outer(1:p, 1:p, FUN = "-"))
@@ -228,33 +227,21 @@ simulate_rct_and_os_data <- function(
     }
   }
   if(cv_mismatch) {
-    ## ---------- impute V̂ for the RCT ----------
-    ## Fit V ~ Z on OS (one OLS per column; closed-form matrix works too)
-    B_hat <- MASS::ginv(t(Z_o) %*% Z_o) %*% (t(Z_o) %*% V_o)   # p_z × p_v
-    Vhat_r <- Z_r %*% B_hat                                    # n_r × p_v
-    B2_hat <- MASS::ginv(t(Z_r) %*% Z_r) %*% (t(Z_r) %*% U_r)  # p_z × p_v
-    Uhat_o <- Z_o %*% B2_hat                                   # n_r × p_v
-
     components <- list(
       U = U_r,
       V = V_o,
       Z_r = Z_r,
-      Z_o = Z_o,
-      Vhat = Vhat_r,
-      Uhat = Uhat_o,
-      U0 = matrix(0, n_o, p_u)
+      Z_o = Z_o
     )
-    rct_full <- c('U', 'Z_r', 'Vhat')
-    os_full <- c('U0', 'Z_o', 'V')
-    X_full_r <- do.call(cbind, components[rct_full])
-    X_full_o <- do.call(cbind, components[os_full])
+    X_full_r <- Z_r
+    X_full_o <- Z_o
     idx <- list(U = idx_u, Z = idx_z, V = idx_v)
   } else {
     components = NULL
     idx = NULL
   }
 
-  list(
+  o <- list(
     X_RCT = X_full_r,
     X_OS = X_full_o,
     components = components,
@@ -267,4 +254,6 @@ simulate_rct_and_os_data <- function(
     idx = idx,
     exp_settings = exp_settings
   )
+  class(o) <- 'sim_data'
+  o
 }
