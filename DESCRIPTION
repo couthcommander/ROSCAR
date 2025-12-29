@@ -1,6 +1,8 @@
 Package: ROSCAR
 Type: Package
-Title: What the Package Does (Short Line)
+Title: Improve the efficiency of conditional average treatment
+effect (CATE) estimation in RCTs by leveraging large observational
+studies (OS) while preserving the unbiasedness of RCT estimates (\cite{arXiv:2306.17478}).
 Version: 1.0
 Date: 2025-12-16
 Authors@R: 
@@ -12,9 +14,12 @@ Authors@R:
              family = "Beck",
              role = "aut",
              email = "cole.beck@vumc.org",
-             comment = c(ORCID = "0000-0002-6849-6255")))
+             comment = c(ORCID = "0000-0002-6849-6255")),
+      person("Samhita", "Pal", role = "aut"),
+      person("Chiara", "Di Gravio", role = "aut"),
+      person("Jared", "Huling", role = "ctb"))
 Description: More about what it does (maybe more than one line).
-Depends: R (>= 3.5)
+Depends: R (>= 4.1)
 Imports: glmnet, methods
 Suggests: caret, MASS, randomForest
 License: GPL (>=3)
@@ -24,3 +29,4 @@ NeedsCompilation: no
 Author: Amir Asiaeetaheri [aut, cre],
   Cole Beck [aut] (<https://orcid.org/0000-0002-6849-6255>)
 Maintainer: Amir Asiaeetaheri <amir.asiaeetaheri@vumc.org>
+
